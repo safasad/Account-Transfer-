@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  react-app:
+    build:
+      context: ./front-end
+    ports:
+      - "3000:3000"
+
+  django-app:
+    build:
+      context: ./back-end/account_transfer_app
+    ports:
+      - "8000:8000"

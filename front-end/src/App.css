@@ -1,0 +1,31 @@
+.app-container {
+  height: 100vh;
+  padding: 0;
+}
+
+.main-content {
+  background-color: #f8f9fa; /* Background color for main content */
+  overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+}
+
+.main-header {
+  background-color: #343a40; /* Match sidebar background color */
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+.grid-container {
+  padding: 20px;
+}
+
+.grid-container > div {
+  margin-bottom: 20px;
+}
+.row>* {
+  padding: 0;
+}
+.row{
+  margin: 0 ;
+  height: 100% !important;
+}

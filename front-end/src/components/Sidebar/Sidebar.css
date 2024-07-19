@@ -1,0 +1,93 @@
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background-color: #343a40;
+  color: white;
+  transition: width 0.3s;
+  -webkit-transition: width 0.3s;
+  -moz-transition: width 0.3s;
+  -ms-transition: width 0.3s;
+  -o-transition: width 0.3s;
+}
+
+.sidebar-container.closed {
+  width: 8.33333333%; /* Adjust to your preferred collapsed width */
+}
+
+.sidebar-container.open {
+  width: 16.66666667%;
+}
+
+.sidebar-toggle {
+  background-color: #343a40;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 15px 0;
+  text-align: left;
+  display: flex;
+  justify-content: center; /* Center the toggle button */
+  align-items: center;
+}
+
+.sidebar-toggle:focus {
+  outline: none;
+}
+
+/* Remove hover and focus effects */
+.sidebar-toggle:hover,
+.sidebar-toggle:focus,
+.sidebar-toggle:active {
+  background-color: #343a40;
+  color: white;
+}
+
+.sidebar-toggle .sidebar-icon {
+  font-size: 25px;
+  color: #f8f9fa; /* Custom color for icon */
+}
+
+.sidebar {
+  height: 100%;
+  width: 100%;
+  padding-top: 20px;
+}
+
+.sidebar .nav-link {
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center; /* Align icons with text */
+}
+
+.sidebar .nav-link:hover {
+  background-color: #495057;
+  color: white;
+}
+
+.sidebar .nav-link.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.collapsed-sidebar-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.collapsed-sidebar-icons .collapsed-icon {
+  margin-bottom: 20px;
+  font-size: 25px;
+  color: #f8f9fa; /* Custom color for collapsed icons */
+}
+.link-title{
+  margin-left: 10px !important;
+}
