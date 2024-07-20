@@ -32,3 +32,18 @@
 .action-icon:hover {
   color: #0056b3;
 } */
+/* In your CSS file (e.g., style.css) */
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+.card{
+  margin:10px;
+}

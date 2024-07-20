@@ -38,10 +38,6 @@ const Transactions = () => {
     fetchTransactions(page);
   };
 
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-  };
 
   const columns = [
     { name: "From account", selector: (row) => row.from_account__name, sortable: true },
@@ -53,7 +49,7 @@ const Transactions = () => {
         {row.status ? 'Success' : 'Failed'}
       </Badge>
     ), },
-    { name: "Date", selector: (row) => formatDate(row.timestamp), sortable: true },
+    { name: "Date",selector: (row) => new Date(row.timestamp).toLocaleString(), sortable: true },
   ];
 
   return (

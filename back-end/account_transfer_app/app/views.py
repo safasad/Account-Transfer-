@@ -13,6 +13,7 @@ from django.core.paginator import Paginator
 import json
 from decimal import Decimal
 from .exceptions import InsufficientBalanceError
+from django.db.models import Q
 
 
 class AccountViewSet(viewsets.ModelViewSet):
@@ -85,13 +86,49 @@ def get_accounts(request):
     # Paginate accounts
     accounts = paginator.get_page(page)
     accounts_data = list(accounts.object_list.values(
-        'id', 'name', 'balance'))
+        'id', 'account_id', 'name', 'balance'))
 
     return JsonResponse({
         'accounts': accounts_data,
         'num_pages': paginator.num_pages,
         'current_page': accounts.number,
     })
+
+
+# In your Django views.py
+
+
+def get_account_details(request, account_id):
+    try:
+        # Retrieve the account
+        account = Account.objects.get(id=account_id)
+
+        # Retrieve transactions related to the account
+        transactions = Transactions.objects.filter(
+            Q(from_account=account) | Q(to_account=account)
+        ).values('from_account__name', 'to_account__name', 'amount','status', 'timestamp').order_by('-timestamp')
+
+        # Pagination
+        page_number = request.GET.get('page', 1)
+        per_page = request.GET.get('per_page', 5)
+        paginator = Paginator(transactions, per_page)
+        page = paginator.get_page(page_number)
+
+        # Prepare the data for response
+        account_data = {
+            'id': account.id,
+            'name': account.name,
+            'balance': account.balance,
+        }
+
+        return JsonResponse({
+            'account': account_data,
+            'transactions': list(page),
+            'num_pages': paginator.num_pages,
+            'current_page': page.number,
+        })
+    except Account.DoesNotExist:
+        return JsonResponse({'error': 'Account not found'}, status=404)
 
 
 @csrf_exempt
