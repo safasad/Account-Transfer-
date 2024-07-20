@@ -4,7 +4,7 @@ import Accounts from './components/Accounts/Accounts';
 import Transactions from './components/Transactions/Transactions';
 import Home from './pages/home';
 import Sidebar from './components/Sidebar/Sidebar';
-import './App.css'; // Import the CSS file
+import './App.css'; 
 import Header from './components/Header/Header';
 
 const App = () => {
@@ -33,7 +33,7 @@ const App = () => {
       <Header pageName={pageName} />
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Accounts />} />
           <Route path="/accounts" element={<Accounts />} />
           <Route path="/transactions" element={<Transactions />} />
         </Routes>

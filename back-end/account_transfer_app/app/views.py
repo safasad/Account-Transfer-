@@ -38,20 +38,20 @@ def import_accounts(request):
             created_accounts = []
 
             for row in reader:
-                account = Account.objects.get(
-                    account_id=row['ID']
-                )
-                if account:
+                try:
+                    account = Account.objects.get(
+                        account_id=row['ID']
+                    )
                     if account.balance != Decimal(row['Balance']):
                         account.balance = Decimal(row['Balance'])
                         account.save()
-                else:
+                except:
                     Account.objects.create(
                         account_id=row['ID'],
                         name=row['Name'],
                         balance=row['Balance'],
 
-                    )
+                    ).save()
             return JsonResponse({
                 'message': 'Import successful',
 
@@ -106,7 +106,7 @@ def get_account_details(request, account_id):
         # Retrieve transactions related to the account
         transactions = Transactions.objects.filter(
             Q(from_account=account) | Q(to_account=account)
-        ).values('from_account__name', 'to_account__name', 'amount','status', 'timestamp').order_by('-timestamp')
+        ).values('from_account__name', 'to_account__name', 'amount', 'status', 'timestamp').order_by('-timestamp')
 
         # Pagination
         page_number = request.GET.get('page', 1)
@@ -167,8 +167,6 @@ def transfer(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            print(f'transactions>>>>>>>.{data}')
-
             transfer_data = data['transfer']
             from_account_id = transfer_data['from_account']
             to_account_id = transfer_data['to_account']

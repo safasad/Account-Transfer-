@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
-import CustomOption from "./CustomOption"; // Ensure this is the correct path to your CustomOption component
+import CustomOption from "./CustomOption"; 
 
 const TransferModal = ({ setReload , reload}) => {
   const [show, setShow] = useState(false);
@@ -17,7 +17,6 @@ const TransferModal = ({ setReload , reload}) => {
   const [amount, setAmount] = useState("");
 
   useEffect(() => {
-    // Fetch accounts from API
     axios
       .get("http://localhost:8000/get-accounts/")
       .then((response) => {
@@ -35,7 +34,6 @@ const TransferModal = ({ setReload , reload}) => {
 
   const handleClose = () => {
     setShow(false);
-    // Reset the form values
     setFromAccount(null);
     setToAccount(null);
     setAmount("");
@@ -45,39 +43,32 @@ const TransferModal = ({ setReload , reload}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const transfer = {
-      from_account: fromAccount.value, // Use the value field for the account ID
-      to_account: toAccount.value, // Use the value field for the account ID
+      from_account: fromAccount.value, 
+      to_account: toAccount.value, 
       amount,
     };
-    console.log(transfer);
-
     try {
       const response = await axios.post("http://localhost:8000/transfer/", {
         transfer,
       });
-      console.log("Transfer successful:", response.data);
       toast.success("Transfer done successfully!");
       setReload(!reload);
-      handleClose(); // Close the modal on successful transfer
+      handleClose();
       setLoading(true);
     } catch (error) {
-      console.log(error);
       toast.error(`${error.response.data.error}`);
       setReload(!reload);
 
 
-      // console.error("There was an error making the transfer!", error);
     }
   };
 
   const handleFromAccountChange = (selectedOption) => {
     setFromAccount(selectedOption);
-    console.log("Selected account:", selectedOption);
   };
 
   const handleToAccountChange = (selectedOption) => {
     setToAccount(selectedOption);
-    console.log("Selected account:", selectedOption);
   };
 
   // Filter accounts for "To account" dropdown
@@ -117,7 +108,7 @@ const TransferModal = ({ setReload , reload}) => {
                 placeholder="Select an account"
                 isClearable
                 autoFocus
-                components={{ Option: CustomOption }} // Use the custom option component
+                components={{ Option: CustomOption }} 
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="toAccount">
@@ -129,7 +120,7 @@ const TransferModal = ({ setReload , reload}) => {
                 placeholder="Select an account"
                 isClearable
                 autoFocus
-                components={{ Option: CustomOption }} // Use the custom option component
+                components={{ Option: CustomOption }} 
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="amount">

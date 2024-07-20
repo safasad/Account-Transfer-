@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Transactions.css"; // Import the CSS file
+import "./Transactions.css";
 import TransferModal from "./Modal";
 import { Spinner, Container, Row, Col , Badge } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
@@ -23,7 +23,7 @@ const Transactions = () => {
       if (response.status === 200) {
         const data = response.data;
         setTransactions(data.transactions);
-        setTotalRows(data.num_pages * 10); // Assuming 10 rows per page
+        setTotalRows(data.num_pages * 10); 
         setCurrentPage(data.current_page);
       } else {
         toast.error('Failed to fetch transactions');

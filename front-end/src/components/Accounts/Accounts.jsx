@@ -97,7 +97,7 @@ const Accounts = () => {
         const data = await response.json();
         setSelectedAccount(data.account);
         setAccountTransactions(data.transactions);
-        setTotalRowsForAccount(data.num_pages * 10); // Assuming 10 rows per page
+        setTotalRowsForAccount(data.num_pages * 10); 
         setCurrentPageForAccount(data.currentPage)
         setShowDetails(true);
       } else {
@@ -241,7 +241,6 @@ const Accounts = () => {
       />
       <ToastContainer />
 
-      {/* Modal for showing account details and transactions */}
       <AccountDetailsModal
         showDetails={showDetails}
         setShowDetails={setShowDetails}

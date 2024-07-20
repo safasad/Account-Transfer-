@@ -2,7 +2,7 @@ import React from "react";
 import { Nav, Navbar, Container } from "react-bootstrap";
 import { FaBars, FaUser, FaExchangeAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import "./Sidebar.css"; // Import the CSS file
+import "./Sidebar.css"; 
 
 const Sidebar = () => {
   const navigate = useNavigate();
