@@ -1,55 +1,34 @@
-import React, { useState } from 'react';
-import { Nav, Button, Collapse } from 'react-bootstrap';
-import { FaBars, FaUser, FaExchangeAlt } from 'react-icons/fa';
-import './Sidebar.css'; // Import the CSS file
-import Transactions from './../Transactions/Transactions';
+import React from "react";
+import { Nav, Navbar, Container } from "react-bootstrap";
+import { FaBars, FaUser, FaExchangeAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import "./Sidebar.css"; // Import the CSS file
 
-const Sidebar = ({ setView, toggleSidebar }) => {
-  const [open, setOpen] = useState(true);
-
-  const handleToggle = () => {
-    setOpen(!open);
-    toggleSidebar(!open); // Notify parent component of toggle state
-  };
+const Sidebar = () => {
+  const navigate = useNavigate();
 
   return (
-    <div className={`sidebar-container ${open ? 'open' : 'closed'}`}>
-      <Button
-        onClick={handleToggle}
-        aria-controls="sidebar"
-        aria-expanded={open}
-        className="sidebar-toggle"
-      >
-        <FaBars className="sidebar-icon" />
-      </Button>
-      <Collapse in={open}>
-        <div id="sidebar">
-          <Nav
-            className="col-md-12 d-none d-md-block sidebar"
-            activeKey="/home"
-            onSelect={(selectedKey) => setView(selectedKey)}
-          >
-            <div className="sidebar-sticky"></div>
+    <Navbar collapseOnSelect fixed="left" bg="dark" expand="sm" variant="dark" className="sidebar-nav">
+      <Container>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="col-md-12 d-none d-md-block sidebar">
             <Nav.Item>
-              <Nav.Link eventKey="accounts">
-                <FaUser className="sidebar-icon" /> <span className='link-title'>Accounts</span>
+              <Nav.Link onClick={() => navigate('/accounts')}>
+                <FaUser className="sidebar-icon" />
+                <span className="link-title">Accounts</span>
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="transactions">
-                <FaExchangeAlt className="sidebar-icon" /> <span className='link-title'>Transactions</span>
+              <Nav.Link onClick={() => navigate('/transactions')}>
+                <FaExchangeAlt className="sidebar-icon" />
+                <span className="link-title">Transactions</span>
               </Nav.Link>
             </Nav.Item>
           </Nav>
-        </div>
-      </Collapse>
-      {!open && (
-        <div className="collapsed-sidebar-icons">
-          <FaUser className="collapsed-icon" />
-          <FaExchangeAlt className="collapsed-icon" />
-        </div>
-      )}
-    </div>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 

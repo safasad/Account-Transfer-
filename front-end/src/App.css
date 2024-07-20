@@ -1,31 +1,27 @@
 .app-container {
+  display: flex;
+}
+
+.sidebar-nav {
   height: 100vh;
-  padding: 0;
+  width: 200px;
+}
+
+.sidebar-icon {
+  margin-right: 10px;
+}
+
+.link-title {
+  color: white;
 }
 
 .main-content {
-  background-color: #f8f9fa; /* Background color for main content */
-  overflow-y: auto; /* Allow scrolling if content exceeds viewport */
+  flex-grow: 1;
 }
 
 .main-header {
-  background-color: #343a40; /* Match sidebar background color */
+  background: #343a40;
   color: white;
-  padding: 15px;
+  padding: 10px;
   text-align: center;
-}
-
-.grid-container {
-  padding: 20px;
-}
-
-.grid-container > div {
-  margin-bottom: 20px;
-}
-.row>* {
-  padding: 0;
-}
-.row{
-  margin: 0 ;
-  height: 100% !important;
 }

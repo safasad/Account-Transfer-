@@ -1,35 +1,13 @@
-import React, { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import Accounts from './components/Accounts';
-import Transactions from './components/Transactions';
-import './App.css'; // Import the CSS file
+import React from 'react';
+import './style.css'; // Import the CSS file
 
-const App = () => {
-  const [view, setView] = useState('accounts');
-
-  const getPageTitle = () => {
-    switch (view) {
-      case 'accounts':
-        return 'Accounts';
-      case 'transactions':
-        return 'Transactions';
-      default:
-        return 'Dashboard'; // Default page title
-    }
-  };
-
+const Home = () => {
   return (
-    <div className="app-container">
-      <Sidebar setView={setView} />
-      <Header pageTitle={getPageTitle()} />
-      <div className="main-content">
-        {view === 'accounts' && <Accounts />}
-        {view === 'transactions' && <Transactions />}
-      </div>
+    <div>
+      <h1>Welcome to the Home Page</h1>
+      {/* Add more home page content here */}
     </div>
   );
 };
 
-export default App;
+export default Home;

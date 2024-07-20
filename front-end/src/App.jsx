@@ -1,48 +1,52 @@
-import React, { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import Sidebar from './components/Sidebar/Sidebar';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route ,useLocation} from 'react-router-dom';
 import Accounts from './components/Accounts/Accounts';
 import Transactions from './components/Transactions/Transactions';
+import Home from './pages/home';
+import Sidebar from './components/Sidebar/Sidebar';
 import './App.css'; // Import the CSS file
+import Header from './components/Header/Header';
 
 const App = () => {
-  const [view, setView] = useState('accounts');
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const location = useLocation();
+  let pageName = '';
 
-  const getPageTitle = () => {
-    switch (view) {
-      case 'accounts':
-        return 'Accounts';
-      case 'transactions':
-        return 'Transactions';
-      default:
-        return 'Dashboard'; // Default page title
-    }
-  };
-  const toggleSidebar = (isOpen) => {
-    setSidebarOpen(isOpen); // Update sidebarOpen state
-  };
+  switch (location.pathname) {
+    case '/':
+      pageName = 'Home';
+      break;
+    case '/accounts':
+      pageName = 'Accounts';
+      break;
+    case '/transactions':
+      pageName = 'Transactions';
+      break;
+    default:
+      pageName = 'Page Not Found';
+  }
+
   return (
-    <Container fluid className="app-container">
-      <Row>
-        {/* Sidebar */}
-        <Col xs={12} md={sidebarOpen ? 2 : 1} lg={sidebarOpen ? 2 : 1} className="sidebar-col">
-          <Sidebar setView={setView} toggleSidebar={toggleSidebar} />
-        </Col>
-        {/* Main Content */}
-        <Col xs={12} md={sidebarOpen ? 10 : 11} lg={sidebarOpen ? 10 : 11}
-         className="main-content">
-          <header className="main-header">
-            <h3>{getPageTitle()}</h3>
-          </header>
-          <div className="grid-container">
-            {view === 'accounts' && <Accounts />}
-            {view === 'transactions' && <Transactions />}
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <div className="app-container">
+      <Sidebar />
+
+      <div className="main-content">
+      <Header pageName={pageName} />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/accounts" element={<Accounts />} />
+          <Route path="/transactions" element={<Transactions />} />
+          {/* Add more routes as needed */}
+        </Routes>
+      </div>
+    </div>
   );
 };
 
-export default App;
+const AppWithRouter = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default AppWithRouter;
