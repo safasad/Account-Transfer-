@@ -1,6 +1,7 @@
 from django.db import models
 from .exceptions import InsufficientBalanceError
 
+
 class Account(models.Model):
     account_id = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
@@ -16,6 +17,7 @@ class Transactions(models.Model):
     to_account = models.ForeignKey(
         Account, related_name='transfers_in', on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -29,7 +31,8 @@ class Transactions(models.Model):
 
                 self.from_account.save()
                 self.to_account.save()
+                self.status = True
             else:
-                print('Insufficient balance for this transaction')
-                raise InsufficientBalanceError('Insufficient balance for this transaction')
+                self.status =False
+
         super(Transactions, self).save(*args, **kwargs)

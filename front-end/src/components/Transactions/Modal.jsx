@@ -3,12 +3,12 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Select from 'react-select';
-import CustomOption from './CustomOption'; // Ensure this is the correct path to your CustomOption component
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Select from "react-select";
+import CustomOption from "./CustomOption"; // Ensure this is the correct path to your CustomOption component
 
-const TransferModal = ({ setTransactions, setCurrentPage, setTotalRows }) => {
+const TransferModal = ({ setReload , reload}) => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [accounts, setAccounts] = useState([]);
@@ -18,12 +18,13 @@ const TransferModal = ({ setTransactions, setCurrentPage, setTotalRows }) => {
 
   useEffect(() => {
     // Fetch accounts from API
-    axios.get("http://localhost:8000/get-accounts/")
+    axios
+      .get("http://localhost:8000/get-accounts/")
       .then((response) => {
-        const accountOptions = response.data.accounts.map(account => ({
-          value: account.account_id,   
-          label: account.name,         
-          balance: account.balance,  
+        const accountOptions = response.data.accounts.map((account) => ({
+          value: account.account_id,
+          label: account.name,
+          balance: account.balance,
         }));
         setAccounts(accountOptions);
       })
@@ -45,52 +46,63 @@ const TransferModal = ({ setTransactions, setCurrentPage, setTotalRows }) => {
     event.preventDefault();
     const transfer = {
       from_account: fromAccount.value, // Use the value field for the account ID
-      to_account: toAccount.value,     // Use the value field for the account ID
+      to_account: toAccount.value, // Use the value field for the account ID
       amount,
     };
     console.log(transfer);
 
     try {
-      const response = await axios.post("http://localhost:8000/transfer/", { transfer });
-      console.log(response);
-      if (response.status === 200) {
-        console.log("Transfer successful:", response.data);
-        toast.success('Transfer done successfully!');
-
-        setTransactions(response.data.transactions);
-        setTotalRows(response.data.num_pages * 10); // Assuming 10 rows per page
-        setCurrentPage(response.data.current_page);
-
-        handleClose(); // Close the modal on successful transfer
-        setLoading(true);
-      }
+      const response = await axios.post("http://localhost:8000/transfer/", {
+        transfer,
+      });
+      console.log("Transfer successful:", response.data);
+      toast.success("Transfer done successfully!");
+      setReload(!reload);
+      handleClose(); // Close the modal on successful transfer
+      setLoading(true);
     } catch (error) {
-      toast.error(`${response.data.error}`)
+      console.log(error);
+      toast.error(`${error.response.data.error}`);
+      setReload(!reload);
+
+
       // console.error("There was an error making the transfer!", error);
     }
   };
 
-  const handleFromAccountChange = selectedOption => {
+  const handleFromAccountChange = (selectedOption) => {
     setFromAccount(selectedOption);
-    console.log('Selected account:', selectedOption);
+    console.log("Selected account:", selectedOption);
   };
 
-  const handleToAccountChange = selectedOption => {
+  const handleToAccountChange = (selectedOption) => {
     setToAccount(selectedOption);
-    console.log('Selected account:', selectedOption);
+    console.log("Selected account:", selectedOption);
   };
 
   // Filter accounts for "To account" dropdown
-  const availableToAccounts = fromAccount ? accounts.filter(account => account.value !== fromAccount.value) : accounts;
+  const availableToAccounts = fromAccount
+    ? accounts.filter((account) => account.value !== fromAccount.value)
+    : accounts;
 
   return (
     <>
-    <ToastContainer></ToastContainer>
-      <Button variant="dark" onClick={handleShow} style={{ marginBottom: '20px' }}>
+      <ToastContainer></ToastContainer>
+      <Button
+        variant="dark"
+        onClick={handleShow}
+        style={{ marginBottom: "20px" }}
+      >
         Transfer Funds
       </Button>
 
-      <Modal size="lg" show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal
+        size="lg"
+        show={show}
+        onHide={handleClose}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Transfer Funds</Modal.Title>
         </Modal.Header>

@@ -13,6 +13,8 @@ from django.core.paginator import Paginator
 import json
 from decimal import Decimal
 from .exceptions import InsufficientBalanceError
+
+
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
@@ -49,22 +51,9 @@ def import_accounts(request):
                         balance=row['Balance'],
 
                     )
-
-            # Convert account objects to a list of dictionaries
-            accounts_list = Account.objects.all()
-            # Show 10 accounts per page
-            paginator = Paginator(accounts_list, 10)
-
-            page = request.GET.get('page')
-            accounts = paginator.get_page(page)
-
-            accounts_data = list(
-                accounts.object_list.values('id', 'name', 'balance'))
             return JsonResponse({
                 'message': 'Import successful',
-                'accounts': accounts_data,
-                'num_pages': paginator.num_pages,
-                'current_page': accounts.number,
+
             }, status=200)
 
         except MultiValueDictKeyError:
@@ -108,17 +97,14 @@ def get_accounts(request):
 def get_transactions(request):
     transactions_queryset = Transactions.objects.all().order_by('-timestamp')
 
-
     # Pagination
     # Adjust per_page as needed
     paginator = Paginator(transactions_queryset, per_page=10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-
     # Extract values from paginated queryset
     transactions_data = list(page.object_list.values(
-        'from_account__name', 'to_account__name', 'amount', 'timestamp'))
-    print(f'transactions_data {transactions_data}')
+        'from_account__name', 'to_account__name', 'amount','status', 'timestamp'))
     return JsonResponse({
         'transactions': transactions_data,
         'num_pages': paginator.num_pages,
@@ -140,34 +126,18 @@ def transfer(request):
 
             sender_account = Account.objects.get(account_id=from_account_id)
             receiver_account = Account.objects.get(account_id=to_account_id)
-            print(f'{sender_account}=>{receiver_account}')
             transaction = Transactions.objects.create(
                 from_account=sender_account,
                 to_account=receiver_account,
                 amount=amount
             )
-            print(f'transactions_data>>>>>{transaction}')
-
-            try:
-                transaction.save()
-                print(f'transactions_data>>>>>{transaction}')
-
-                transactions_list = Transactions.objects.all().order_by('-timestamp')
-                paginator = Paginator(transactions_list, 10)
-                # page_number = request.GET.get('page', 1)
-                transactions = paginator.get_page(1)
-                transactions_data = list(
-                    transactions.object_list.values('from_account__name', 'to_account__name', 'amount', 'timestamp'))
-                print(f'transactions_data>>>>>{transactions_data}')
+            transaction.save()
+            if transaction.status == True:
                 return JsonResponse({
                     'message': 'Transfer successful',
-                    'transactions': transactions_data,
-                    'num_pages': paginator.num_pages,
-                    'current_page': transactions.number,
                 }, status=200)
-
-            except InsufficientBalanceError as e:
-                return JsonResponse({'error': str(e)}, status=400)
+            else:
+                return JsonResponse({'error': 'Insufficient balance for this transaction'}, status=400)
 
         except Account.DoesNotExist:
             return JsonResponse({'error': 'Account not found'}, status=404)

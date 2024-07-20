@@ -11,11 +11,12 @@ const Accounts = () => {
   const [fileName, setFileName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRows, setTotalRows] = useState(0);
+  const [reload, setReload] = useState(false);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchAccounts(1);
-  }, []);
+  }, [reload]);
 
   const fetchAccounts = async (page) => {
     setLoading(true);
@@ -52,9 +53,8 @@ const Accounts = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setAccounts(data.accounts); // Update the accounts state with new data
-        setTotalRows(data.num_pages * 10); // Assuming 10 rows per page
-        toast.success('CSV imported successfully!');
+        toast.success(' import CSV done successfully');
+        setReload(true)
         setFileName('');
         if (fileInputRef.current) {
           fileInputRef.current.value = null; // Clear the file input
