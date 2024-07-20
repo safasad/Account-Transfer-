@@ -94,6 +94,18 @@ def get_accounts(request):
     })
 
 
+@csrf_exempt
+def delete_account(request, id):
+    if request.method == 'DELETE':
+        try:
+            account = Account.objects.get(id=id).delete()
+            return JsonResponse({'message': 'Account deleted successfully'}, status=200)
+        except Account.DoesNotExist:
+            return JsonResponse({'error': 'Account not found'}, status=404)
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
 def get_transactions(request):
     transactions_queryset = Transactions.objects.all().order_by('-timestamp')
 
@@ -104,7 +116,7 @@ def get_transactions(request):
     page = paginator.get_page(page_number)
     # Extract values from paginated queryset
     transactions_data = list(page.object_list.values(
-        'from_account__name', 'to_account__name', 'amount','status', 'timestamp'))
+        'from_account__name', 'to_account__name', 'amount', 'status', 'timestamp'))
     return JsonResponse({
         'transactions': transactions_data,
         'num_pages': paginator.num_pages,

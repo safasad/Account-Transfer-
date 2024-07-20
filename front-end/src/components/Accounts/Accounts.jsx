@@ -94,13 +94,10 @@ const Accounts = () => {
       });
 
       if (response.ok) {
-        setAccounts(accounts.filter(account => account.id !== accountId));
-        toast.success('Account deleted successfully');
-      } else {
-        toast.error('Failed to delete account');
-      }
+        setReload(!reload)
+        toast.success('Account deleted successfully');}
     } catch (error) {
-      toast.error('Error deleting account: ' + error.message);
+      toast.error('Error deleting account: ' + error.response.data.error);
     }
   };
 
