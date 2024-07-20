@@ -39,8 +39,8 @@ This project is a simple account management application for a company. It includ
 
 1. Clone the repository:
     ```bash
-    git clone 
-    cd repo
+    git clone https://github.com/safasad/Account-Transfer-.git
+    cd Account-Transfer
     ```
 
 2. Start the application using Docker Compose:
