@@ -48,21 +48,23 @@ const AccountDetailsModal = ({
             {selectedAccount && (
               <div>
                 <Row className="info">
-                  <Col lg="4" sm="6">
+                  <Col >
                     <Card>
                       <Card.Body>
-                        <strong>Account ID:</strong> {selectedAccount.id}
+                        <strong>Account ID:</strong> {selectedAccount.account_id}
                       </Card.Body>
                     </Card>
                   </Col>
-                  <Col lg="4" sm="6">
+                  </Row>
+                  <Row>
+                  <Col>
                     <Card>
                       <Card.Body>
                         <strong>Name:</strong> {selectedAccount.name}
                       </Card.Body>
                     </Card>
                   </Col>
-                  <Col lg="4" sm="6">
+                  <Col>
                     <Card>
                       <Card.Body>
                         <strong>Balance:</strong> {selectedAccount.balance}

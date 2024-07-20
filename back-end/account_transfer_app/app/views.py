@@ -116,7 +116,8 @@ def get_account_details(request, account_id):
 
         # Prepare the data for response
         account_data = {
-            'id': account.account_id,
+            'account_id': account.account_id,
+            'id': account.id,
             'name': account.name,
             'balance': account.balance,
         }
